@@ -1,9 +1,17 @@
 ﻿<div class="top-menu">
     <img src="icons/banana.png" />
-    @Bananas
+    <span class="popover-header">
+        @Bananas
+    </span>
+    <AddBananas BananasAdded="AddBananas"/>
 </div>
 
 @code {
     [Parameter]
     public int Bananas { get; set; } = 100;
+
+    public void AddBananas(int value)
+    {
+        Bananas += value;
+    }
 }
