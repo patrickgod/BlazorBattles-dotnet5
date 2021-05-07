@@ -1,5 +1,6 @@
 ﻿@page "/register"
 @inject IUnitService UnitService
+@inject IJSRuntime JSRuntime
 
 <h3>Register</h3>
 
@@ -60,6 +61,6 @@
 
     void HandleRegistration()
     {
-        Console.WriteLine("Store this new user in the database!");
+        JSRuntime.InvokeVoidAsync("console.log", "This is the great new user:", user);
     }
 }
