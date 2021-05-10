@@ -4,30 +4,40 @@
 
 <h3>My Army</h3>
 
-<table class="table">
-    @foreach (var userUnit in UnitService.MyUnits)
-    {
+@if (UnitService.Units.Count > 0)
+{
+    <table class="table">
+        @foreach (var userUnit in UnitService.MyUnits)
+        {
 
 
-        <tr>
-            <td>
-                @switch (userUnit.UnitId)
-                {
-                    case 1:<img src="icons/knight.png" />break;
-                    case 2: <img src="icons/archer.png" />break;
-                    case 3: <img src="icons/mage.png" />break;
-                }
-            </td>
-            <td>
-                @UnitService.Units.First(unit => unit.Id == userUnit.UnitId).Title
-            </td>
-            <td>
-                @userUnit.HitPoints HP
-            </td>
-        </tr>
-    }
-</table>
+            <tr>
+                <td>
+                    @switch (userUnit.UnitId)
+                    {
+                        case 1:<img src="icons/knight.png" />break;
+                        case 2: <img src="icons/archer.png" />break;
+                        case 3: <img src="icons/mage.png" />break;
+                    }
+                </td>
+                <td>
+                    @UnitService.Units.First(unit => unit.Id == userUnit.UnitId).Title
+                </td>
+                <td>
+                    @userUnit.HitPoints HP
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <span>Loading Units...</span>
+}
 
 @code {
-
+    protected override async Task OnInitializedAsync()
+    {
+        await UnitService.LoadUnitsAsync();
+    }
 }
