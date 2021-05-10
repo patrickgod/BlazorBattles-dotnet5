@@ -1,0 +1,28 @@
+﻿@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+Please log in below or <a href="register">register</a> for a new account.
+
+<EditForm Model="user" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <InputText id="username" @bind-Value="user.Username" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="user.Password" class="form-control" type="password"></InputText>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    private UserLogin user = new UserLogin();
+
+    private async void HandleLogin()
+    {
+        await LocalStorage.SetItemAsync<bool>("isAuthenticated", true);
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+}
