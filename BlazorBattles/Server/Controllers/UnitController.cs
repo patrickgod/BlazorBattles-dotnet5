@@ -55,5 +55,20 @@ namespace BlazorBattles.Server.Controllers
 
             return Ok(dbUnit);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUnit(int id)
+        {
+            var dbUnit = await _context.Units.FirstOrDefaultAsync(u => u.Id == id);
+            if (dbUnit == null)
+            {
+                return NotFound("Unit with the given Id doesn't exist.");
+            }
+
+            _context.Units.Remove(dbUnit);
+            await _context.SaveChangesAsync();
+
+            return Ok(await _context.Units.ToListAsync());
+        }
     }
 }
