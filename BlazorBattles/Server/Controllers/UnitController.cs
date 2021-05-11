@@ -35,5 +35,25 @@ namespace BlazorBattles.Server.Controllers
             await _context.SaveChangesAsync();
             return Ok(await _context.Units.ToListAsync());
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUnit(int id, Unit unit)
+        {
+            var dbUnit = await _context.Units.FirstOrDefaultAsync(u => u.Id == id);
+            if (dbUnit == null)
+            {
+                return NotFound("Unit with the given Id doesn't exist.");
+            }
+
+            dbUnit.Title = unit.Title;
+            dbUnit.Attack = unit.Attack;
+            dbUnit.Defense = unit.Defense;
+            dbUnit.BananaCost = unit.BananaCost;
+            dbUnit.HitPoints = unit.HitPoints;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(dbUnit);
+        }
     }
 }
