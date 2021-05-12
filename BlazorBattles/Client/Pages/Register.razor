@@ -1,7 +1,8 @@
 ﻿@page "/register"
 @inject IUnitService UnitService
-@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+@inject IToastService ToastService
 
 <h3>Register</h3>
 
@@ -65,9 +66,17 @@
         await UnitService.LoadUnitsAsync();
     }
 
-    void HandleRegistration()
+    async void HandleRegistration()
     {
-        JSRuntime.InvokeVoidAsync("console.log", "This is the great new user:", user);
-        NavigationManager.NavigateTo("login");
+        var result = await AuthService.Register(user);
+        if (result.Success)
+        {
+            ToastService.ShowSuccess(result.Message);
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            ToastService.ShowError(result.Message);
+        }
     }
 }
