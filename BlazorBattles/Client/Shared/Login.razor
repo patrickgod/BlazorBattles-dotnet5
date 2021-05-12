@@ -6,8 +6,8 @@ Please log in below or <a href="register">register</a> for a new account.
 <EditForm Model="user" OnValidSubmit="HandleLogin">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <div class="form-group">
-        <label for="username">Username</label>
-        <InputText id="username" @bind-Value="user.Username" class="form-control"></InputText>
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="user.Email" class="form-control"></InputText>
     </div>
     <div class="form-group">
         <label for="password">Password</label>
