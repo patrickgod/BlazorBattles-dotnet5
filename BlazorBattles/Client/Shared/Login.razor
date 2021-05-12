@@ -1,5 +1,7 @@
 ﻿@inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuthService AuthService
+@inject IToastService ToastService
 
 Please log in below or <a href="register">register</a> for a new account.
 
@@ -22,7 +24,16 @@ Please log in below or <a href="register">register</a> for a new account.
 
     private async void HandleLogin()
     {
-        await LocalStorage.SetItemAsync<bool>("isAuthenticated", true);
-        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var result = await AuthService.Login(user);
+        if (result.Success)
+        {
+            await LocalStorage.SetItemAsync<bool>("isAuthenticated", true);
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        }
+        else
+        {
+            ToastService.ShowError(result.Message);
+        }
+
     }
 }
