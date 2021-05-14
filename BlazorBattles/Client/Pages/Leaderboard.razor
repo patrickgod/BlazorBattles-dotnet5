@@ -1,0 +1,45 @@
+﻿@page "/leaderboard"
+@inject ILeaderboardService LeaderboardService
+
+<h3>Leaderboard</h3>
+
+@if (LeaderboardService.Leaderboard == null)
+{
+    <span>Loading Leaderboard...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Victories</th>
+                <th>Defeats</th>
+                <th>Battles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in LeaderboardService.Leaderboard)
+            {
+                <tr>
+                    <td>@entry.Rank</td>
+                    <td>@entry.Username</td>
+                    <td>@entry.Victories</td>
+                    <td>@entry.Defeats</td>
+                    <td>@entry.Battles</td>
+                    <td><button class="btn btn-primary">Fight</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await LeaderboardService.GetLeaderboard();
+    }
+}
