@@ -43,5 +43,30 @@ namespace BlazorBattles.Server.Controllers
             await _context.SaveChangesAsync();
             return Ok(user.Bananas);
         }
+
+        [HttpGet("leaderboard")]
+        public async Task<IActionResult> GetLeaderboard()
+        {
+            var users = await _context.Users.Where(user => !user.IsDeleted && user.IsConfirmed).ToListAsync();
+
+            users = users
+                .OrderByDescending(u => u.Victories)
+                .ThenBy(u => u.Defeats)
+                .ThenBy(u => u.DateCreated)
+                .ToList();
+
+            int rank = 1;
+            var response = users.Select(user => new UserStatistic
+            {
+                Rank = rank++,
+                UserId = user.Id,
+                Username = user.Username,
+                Battles = user.Battles,
+                Victories = user.Victories,
+                Defeats = user.Defeats
+            });
+
+            return Ok(response);
+        }
     }
 }
